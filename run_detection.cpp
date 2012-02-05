@@ -1,11 +1,13 @@
-#include <read_text/text_detect.h>
+#include "text_detect.h"
 #include <iostream>
+
+using namespace std;
 
 int main(int argc, char* argv[])
 {
 	if (argc < 4)
 	{
-		cout << "not enought input: detect_text <image> <correlation> <dictionary>"
+		cout << "not enough input: detect_text <image> <correlation> <dictionary>"
 		<< endl;
 		return -1;
 	}
