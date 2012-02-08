@@ -909,8 +909,8 @@ DetectText::ocrRead(const Mat& imagePatch, string& output)
 	{
 		imwrite("patch.tiff", imagePatch);	
 	}
-	int result = 0;
-	//result = system("$(rospack find tesseract)/bin/tesseract patch.tiff patch");
+	int result;
+	result = system("/usr/local/bin/tesseract patch.tiff patch");
 	assert(!result);
 	ifstream fin("patch.txt");
 	string str;
