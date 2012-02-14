@@ -1,7 +1,7 @@
 LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
-include $(OPENCV_PATH)/share/OpenCV/OpenCV.mk
+include $(OPENCV_PACKAGE_DIR)/share/OpenCV/OpenCV.mk
 
 LOCAL_MODULE    := run_detection
 LOCAL_SRC_FILES := text_detect.cpp run_detection.cpp
