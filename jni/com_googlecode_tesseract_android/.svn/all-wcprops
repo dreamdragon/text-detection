@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/!svn/ver/5/trunk/tesseract-android-tools/jni/com_googlecode_tesseract_android
+END
+tessbaseapi.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/!svn/ver/5/trunk/tesseract-android-tools/jni/com_googlecode_tesseract_android/tessbaseapi.cpp
+END
+Android.mk
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/!svn/ver/4/trunk/tesseract-android-tools/jni/com_googlecode_tesseract_android/Android.mk
+END
+common.h
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/!svn/ver/3/trunk/tesseract-android-tools/jni/com_googlecode_tesseract_android/common.h
+END

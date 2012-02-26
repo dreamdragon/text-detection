@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/!svn/ver/3/trunk/tesseract-android-tools/jni/com_googlecode_leptonica_android/stdio
+END
+fopencookie.c
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/!svn/ver/3/trunk/tesseract-android-tools/jni/com_googlecode_leptonica_android/stdio/fopencookie.c
+END
+fmemopen.c
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/!svn/ver/3/trunk/tesseract-android-tools/jni/com_googlecode_leptonica_android/stdio/fmemopen.c
+END
+extrastdio.h
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/!svn/ver/3/trunk/tesseract-android-tools/jni/com_googlecode_leptonica_android/stdio/extrastdio.h
+END
+open_memstream.c
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/!svn/ver/3/trunk/tesseract-android-tools/jni/com_googlecode_leptonica_android/stdio/open_memstream.c
+END
