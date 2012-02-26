@@ -9,6 +9,6 @@ include $(CLEAR_VARS)
 include $(OPENCV_PACKAGE_DIR)/share/OpenCV/OpenCV.mk
 
 LOCAL_MODULE    := run_detection
-LOCAL_SRC_FILES := ../text_detect.cpp ../run_detection.cpp
+LOCAL_SRC_FILES := ../text_detect.cpp ../android.cpp
 
 include $(BUILD_SHARED_LIBRARY)
