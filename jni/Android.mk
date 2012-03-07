@@ -6,6 +6,8 @@ LEPTONICA_PATH := $(LOCAL_PATH)/com_googlecode_leptonica_android/src
 include $(call all-subdir-makefiles) 
 
 include $(CLEAR_VARS)
+
+OPENCV_CAMERA_MODULES := off
 include $(OPENCV_PACKAGE_DIR)/share/OpenCV/OpenCV.mk
 
 LOCAL_MODULE    := run_detection
