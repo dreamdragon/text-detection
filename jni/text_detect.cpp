@@ -13,6 +13,9 @@
 #include <iostream>
 #include <fstream>
 #include <stack>
+#include <vector>
+#include <string>
+#include <sstream>
 
 using namespace cv;
 using namespace std;
@@ -905,22 +908,46 @@ DetectText::ocrRead(const Mat& imagePatch, string& output)
 
 		imwrite("patch.tiff", scaledImage);
 	}
-	else
-	{
-		imwrite("patch.tiff", imagePatch);	
-	}
-	int result;
-	result = system("/usr/local/bin/tesseract patch.tiff patch");
-	assert(!result);
-	ifstream fin("patch.txt");
-	string str;
-	while(fin >> str)
-	{
+	// else
+	// {
+	// 	imwrite("patch.tiff", imagePatch);
+	// }
+	// int result;
+	// //result = system("$(rospack find tesseract)/bin/tesseract patch.tiff patch");
+	// result = system("/usr/local/bin/tesseract patch.tiff patch");
+	// assert(!result);
+	// ifstream fin("patch.txt");
+	// string str;
+	// while(fin >> str)
+	// {
+	// 	string tempOutput;
+	// 	score += spellCheck(str, tempOutput, 2);
+	// 	output += tempOutput;
+	// }
+	// result = system("$(rm patch.txt patch.tiff)");
+	// return score;
+	//
+	tesseract::TessBaseAPI tess;
+	tess.Init(NULL, "eng");
+	tess.SetImage((uchar*)imagePatch.data, imagePatch.size().width, imagePatch.size().height, imagePatch.channels(), imagePatch.step1());
+	tess.Recognize(0);
+	char* out = tess.GetUTF8Text();
+
+	string str(out);
+	string buf;
+	stringstream ss(str);
+
+	vector<string> tokens;
+
+	while (ss >> buf)
+		tokens.push_back(buf);
+
+	for(std::vector<int>::size_type i = 0; i != tokens.size(); i++) {
 		string tempOutput;
-		score += spellCheck(str, tempOutput, 2);
+		score += spellCheck(tokens[i], tempOutput, 2);
 		output += tempOutput;
 	}
-	result = system("$(rm patch.txt patch.tiff)");
+
 	return score;
 }
 
@@ -1002,46 +1029,46 @@ DetectText::spellCheck(string& str, string& output, int method)
 	}
 	else
 	{
-		if (method == 1)
-		{
-			const string command("echo " + withoutStrangeMarks +
-					" | aspell -a >> output");
-			int r = system(command.c_str());
-			fstream fin("output");
-			string result;
-			int count = 0;
-
-			while (fin >> result)
-			{	
-				if (count)
-				{
-					count ++;
-					if (count >= 5)
-					{	
-						output	+= result + " ";
-					}	
-					if (count == 10)
-					{
-						if ((output)[output.length()-2]==',')
-							((output)[output.length()-2]=' ');
-						break;
-					}
-				}
-				if (result[0] == '&')
-				{
-					count++;
-					output += "{";
-				}
-				else if (result[0] == '*')
-				{
-					output += " " + str;
-					break;		
-				}
-			}
-			if (count)
-				output += "}";
-			r = system("rm output");
-		}
+		// if (method == 1)
+		// {
+		// 	const string command("echo " + withoutStrangeMarks +
+		// 			" | aspell -a >> output");
+		// 	int r = system(command.c_str());
+		// 	fstream fin("output");
+		// 	string result;
+		// 	int count = 0;
+		//
+		// 	while (fin >> result)
+		// 	{
+		// 		if (count)
+		// 		{
+		// 			count ++;
+		// 			if (count >= 5)
+		// 			{
+		// 				output	+= result + " ";
+		// 			}
+		// 			if (count == 10)
+		// 			{
+		// 				if ((output)[output.length()-2]==',')
+		// 					((output)[output.length()-2]=' ');
+		// 				break;
+		// 			}
+		// 		}
+		// 		if (result[0] == '&')
+		// 		{
+		// 			count++;
+		// 			output += "{";
+		// 		}
+		// 		else if (result[0] == '*')
+		// 		{
+		// 			output += " " + str;
+		// 			break;
+		// 		}
+		// 	}
+		// 	if (count)
+		// 		output += "}";
+		// 	r = system("rm output");
+		// }
 
 		// dictionary search 
 		if (method == 2)
@@ -1146,6 +1173,20 @@ DetectText::readLetterCorrelation(const char* file)
 }
 
 	void
+DetectText::readLetterCorrelation(int fd)
+{
+	FILE* fp = fdopen(fd, "r");
+	correlation_ = Mat(62,62,CV_32F, Scalar(0));
+	float number;
+	for (int i = 0; i < 62; i++)
+		for(int j = 0; j < 62; j++)
+		{
+			fscanf(fp, "%f", number);
+			correlation_.at<float>(i,j) = number;
+		}
+}
+
+	void
 DetectText::readWordList(const char* filename)
 {
 	ifstream fin(filename);
@@ -1158,6 +1199,22 @@ DetectText::readWordList(const char* filename)
 	assert(wordList_.size());
 	cout << "read in " <<  wordList_.size() << " words from " 
 		<< string(filename) << endl;
+}
+
+	void
+DetectText::readWordList(int fd)
+{
+	FILE* fp = fdopen(fd, "r");
+	char word[256];
+	wordList_.clear();
+	while(!feof(fp))
+	{
+		fscanf(fp, "%s", word);
+		wordList_.push_back(string(word));
+	}
+	assert(wordList_.size());
+//	cout << "read in " <<  wordList_.size() << " words from "
+//			<< string(filename) << endl;
 }
 
 

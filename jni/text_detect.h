@@ -1,6 +1,9 @@
 #ifndef _LITERATE_PR2_TEXT_DETECT_
 #define _LITERATE_PR2_TEXT_DETECT_
 
+#include "com_googlecode_tesseract_android/src/api/baseapi.h"
+
+#include <iostream>
 #include "opencv/cv.h"
 #include "opencv/highgui.h"
 
@@ -20,7 +23,11 @@ public:
 	/* read useful files  */
 	void readLetterCorrelation(const char* filename);
 
+	void readLetterCorrelation(int fd);
+
 	void readWordList(const char* filename);
+
+	void readWordList(int fd);
 
 	/* getters */
 	Mat& getDetection();
