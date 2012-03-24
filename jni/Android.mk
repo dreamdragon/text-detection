@@ -8,6 +8,7 @@ include $(call all-subdir-makefiles)
 #include $(LEPTONICA_PATH)/../Android.mk
 #include $(TESSERACT_PATH)/../Android.mk
 
+
 include $(CLEAR_VARS)
 
 OPENCV_CAMERA_MODULES := off 
