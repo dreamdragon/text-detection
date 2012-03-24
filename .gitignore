@@ -1,0 +1,7 @@
+*.so
+gen
+libs
+obj
+jni/.cproject
+jni/.project
+proguard.cfg
