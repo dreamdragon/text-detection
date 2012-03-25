@@ -1,6 +1,6 @@
 *.so
 gen
-libs/*
+libs
 obj
 jni/.cproject
 jni/.project
