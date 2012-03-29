@@ -6,21 +6,19 @@ import android.content.res.AssetManager;
 
 public class DetectTextNative {
 	
-	private long detectPtr = 0;
-	
-    public DetectTextNative(AssetManager am) {
-    	create();
-    	detectPtr = create();
-    	readLetterCorrelation(detectPtr, am, "correlation.mp3");
-    	readWordList(detectPtr, am, "full-dictionary.mp3");
-        
-    }
-	
-    static {
+    static { 
     	System.loadLibrary("lept");
     	System.loadLibrary("tess");
 		System.loadLibrary("run_detection");
 	}
+	
+	private long detectPtr = 0;
+	
+    public DetectTextNative(AssetManager am) {
+    	detectPtr = create();
+    	readLetterCorrelation(detectPtr, am, "correlation.mp3");
+    	readWordList(detectPtr, am, "full-dictionary.mp3");    
+    }
 
 	private native long create();
 	private native void destroy(long detectPtr);

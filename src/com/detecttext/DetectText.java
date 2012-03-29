@@ -40,7 +40,7 @@ public class DetectText extends Activity {
         
         am = getAssets();
         
-       	//dtn = new DetectTextNative(am);
+       	dtn = new DetectTextNative(am);
         
         Button buttonOne = (Button) findViewById(R.id.button);
         buttonOne.setOnClickListener(new Button.OnClickListener() {
@@ -49,7 +49,7 @@ public class DetectText extends Activity {
                    DetectView dt = (DetectView) findViewById(R.id.myView);
                    Mat frame = dt.getRgbaFrame();
                    Log.i(TAG, "buttonCallback");
-                   //dtn.detect(frame.getNativeObjAddr());
+                   dtn.detect(frame.getNativeObjAddr());
             }
         });
         

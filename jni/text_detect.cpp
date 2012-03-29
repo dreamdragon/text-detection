@@ -16,6 +16,9 @@
 #include <vector>
 #include <string>
 #include <sstream>
+#include <stdio.h>
+
+#include <android/log.h>
 
 using namespace cv;
 using namespace std;
@@ -87,17 +90,17 @@ DetectText::detect()
 	firstPass_ = false;
 	pipeline(-1);
 
-	overlapBoundingBoxes(boundingBoxes_); 
+	overlapBoundingBoxes(boundingBoxes_);
 	ocrRead(boundingBoxes_);
 	showBoundingBoxes(boxesBothSides_);
 	overlayText(boxesBothSides_, wordsBothSides_);
 
-	imwrite(outputPrefix_ + "_detection.jpg",detection_);
+	//imwrite(outputPrefix_ + "_detection.jpg",detection_);
 
 	time_in_seconds = (clock() - start_time) / (double)CLOCKS_PER_SEC;
 	cout << time_in_seconds << "s total in process\n" << endl;
 
-	textDisplayOffset_ = 1;	
+	textDisplayOffset_ = 1;
 }
 
 /* rescale, convert into gray scale */
@@ -121,7 +124,7 @@ DetectText::preprocess(Mat& image)
 	cout << "outputPrefix: "<< outputPrefix_  << endl;
 
 	image_ = image;
-//	bilateralFilter(image, image_, 7, 20, 50);// prosilica sensor noise
+	bilateralFilter(image, image_, 7, 20, 50);// prosilica sensor noise
 
 	maxStrokeWidth_ = round(20*(float)(max(image.cols,image.rows))/1000);
 	initialStrokeWidth_ = maxStrokeWidth_*2;
@@ -903,50 +906,32 @@ DetectText::ocrRead(const Mat& imagePatch, string& output)
 	if (imagePatch.rows < 30)
 	{
 		double scale = 1.5;
-		resize(imagePatch, scaledImage, Size(0,0), 
+		resize(imagePatch, scaledImage, Size(0,0),
 			scale, scale, INTER_LANCZOS4);
 
-		imwrite("patch.tiff", scaledImage);
+		//imwrite("patch.tiff", scaledImage);
 	}
-	// else
-	// {
-	// 	imwrite("patch.tiff", imagePatch);
-	// }
-	// int result;
-	// //result = system("$(rospack find tesseract)/bin/tesseract patch.tiff patch");
-	// result = system("/usr/local/bin/tesseract patch.tiff patch");
-	// assert(!result);
-	// ifstream fin("patch.txt");
-	// string str;
-	// while(fin >> str)
-	// {
-	// 	string tempOutput;
-	// 	score += spellCheck(str, tempOutput, 2);
-	// 	output += tempOutput;
-	// }
-	// result = system("$(rm patch.txt patch.tiff)");
-	// return score;
-	//
+
 	tesseract::TessBaseAPI tess;
 	tess.Init(NULL, "eng");
 	tess.SetImage((uchar*)imagePatch.data, imagePatch.size().width, imagePatch.size().height, imagePatch.channels(), imagePatch.step1());
 	tess.Recognize(0);
-	char* out = tess.GetUTF8Text();
-
-	string str(out);
-	string buf;
-	stringstream ss(str);
-
-	vector<string> tokens;
-
-	while (ss >> buf)
-		tokens.push_back(buf);
-
-	for(std::vector<int>::size_type i = 0; i != tokens.size(); i++) {
-		string tempOutput;
-		score += spellCheck(tokens[i], tempOutput, 2);
-		output += tempOutput;
-	}
+//	char* out = tess.GetUTF8Text();
+//
+//	string str(out);
+//	string buf;
+//	stringstream ss(str);
+//
+//	vector<string> tokens;
+//
+//	while (ss >> buf)
+//		tokens.push_back(buf);
+//
+//	for(std::vector<int>::size_type i = 0; i != tokens.size(); i++) {
+//		string tempOutput;
+//		score += spellCheck(tokens[i], tempOutput, 2);
+//		output += tempOutput;
+//	}
 
 	return score;
 }
@@ -1181,7 +1166,8 @@ DetectText::readLetterCorrelation(int fd)
 	for (int i = 0; i < 62; i++)
 		for(int j = 0; j < 62; j++)
 		{
-			fscanf(fp, "%f", number);
+			fscanf(fp, "%f", &number);
+			//__android_log_print(ANDROID_LOG_VERBOSE, "DetectText", "Correlation floats : %lf", number);
 			correlation_.at<float>(i,j) = number;
 		}
 }
@@ -1205,14 +1191,17 @@ DetectText::readWordList(const char* filename)
 DetectText::readWordList(int fd)
 {
 	FILE* fp = fdopen(fd, "r");
+//	__android_log_print(ANDROID_LOG_VERBOSE, "DetectText", "Dictionary : %p", fp);
 	char word[256];
 	wordList_.clear();
-	while(!feof(fp))
+	//while(fscanf(fp, "%s", word))
+	for(int i = 0; i < 280354; i++)
 	{
-		fscanf(fp, "%s", word);
+		fscanf(fp, "%s", &word);
+		//__android_log_print(ANDROID_LOG_VERBOSE, "DetectText", "Dictionary : %s", word);
 		wordList_.push_back(string(word));
 	}
-	assert(wordList_.size());
+//	assert(wordList_.size());
 //	cout << "read in " <<  wordList_.size() << " words from "
 //			<< string(filename) << endl;
 }

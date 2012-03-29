@@ -6,6 +6,11 @@
 
     <uses-sdk android:minSdkVersion="10" />
     
+    <uses-permission android:name="android.permission.SET_DEBUG_APP"></uses-permission>
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+    
     <supports-screens android:resizeable="true"
                       android:smallScreens="true" 
                       android:normalScreens="true" 
@@ -23,9 +28,5 @@
             </intent-filter>
         </activity>
     </application>
-
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-feature android:name="android.hardware.camera" />
-    <uses-feature android:name="android.hardware.camera.autofocus" />
 
 </manifest> 
