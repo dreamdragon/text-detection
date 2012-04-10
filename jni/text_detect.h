@@ -32,6 +32,8 @@ public:
 	/* getters */
 	Mat& getDetection();
 
+	vector<Rect>& getBoundingBoxes(Mat& image);
+
 	vector<string>& getWords();
 
 	/* tests */

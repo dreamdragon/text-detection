@@ -4,4 +4,11 @@ libs
 obj
 jni/.cproject
 jni/.project
+jni/.DS_Store
 proguard.cfg
+bin
+.project
+.classpath
+.externalToolBuilders
+.DS_Store
+*~

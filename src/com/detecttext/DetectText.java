@@ -1,7 +1,9 @@
 package com.detecttext;
 
+import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 
 import org.opencv.imgproc.Imgproc;
@@ -49,7 +51,8 @@ public class DetectText extends Activity {
                    DetectView dt = (DetectView) findViewById(R.id.myView);
                    Mat frame = dt.getRgbaFrame();
                    Log.i(TAG, "buttonCallback");
-                   dtn.detect(frame.getNativeObjAddr());
+                   int [] boxes = dtn.getBoundingBoxes(frame.getNativeObjAddr());
+                   System.out.println(boxes);
             }
         });
         
