@@ -12,3 +12,4 @@ bin
 .externalToolBuilders
 .DS_Store
 *~
+assets/
